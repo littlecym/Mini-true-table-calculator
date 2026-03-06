@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
     int param = 1 << nr_var;
     bool ans = 0;
     for (pair<string, bool> pi : var) {
-        cout << ANSI_FMT(pi.first, ANSI_FG_GREEN) << ' ';
+        cout << SETW(pi.first, ANSI_FG_GREEN, ALIGN);
     }
-    cout << endl;
+    cout << SETW("result", ANSI_FG_MAGENTA, ALIGN) << endl;
     for (int i = 0 ; i < param ; ++i) {
         int bit = 0;
         for (pair<const string, bool> &pi : var) {
@@ -35,12 +35,10 @@ int main(int argc, char *argv[]) {
             cout << ANSI_FMT("Invalid string.", ANSI_FG_RED) << endl;
             return 1;
         }
-        if (ans) {
-            for (pair<string, bool> pi : var) {
-                cout << ANSI_FMT(to_string(pi.second), ANSI_FG_YELLOW) << ' ';
-            }
-            cout << endl;
+        for (pair<string, bool> pi : var) {
+            cout << SETW(to_string(pi.second), ANSI_FG_YELLOW, ALIGN);
         }
+        cout << SETW(to_string(ans), ANSI_FG_BLUE, ALIGN) << endl;
     }
     free(str);
     return 0;

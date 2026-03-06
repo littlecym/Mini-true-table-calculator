@@ -34,6 +34,8 @@ static struct Rule {
 
 #define NR_REGEX ARRLEN(rules)
 
+#define SETW(str, fmt, len) ANSI_FMT(truncate(str, len - 1), fmt) << fillBlank(truncate(str, len - 1), len)
+
 static regex_t re[NR_REGEX] = {};
 static Token tokens[512] = {};
 static int nr_token = 0;
@@ -48,6 +50,12 @@ int get_priority(int type);
 
 bool eval(vector<Token> rpn, map<string, bool> var, bool *ans);
 
+string truncate(string str, size_t len);
+
+string fillBlank(string str, size_t len);
+
 #define MAX_NR_VAR 16
+
+#define ALIGN 8
 
 #endif

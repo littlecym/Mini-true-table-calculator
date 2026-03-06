@@ -157,3 +157,16 @@ bool eval(vector<Token> rpn, map<string, bool> var, bool *ans) {
     *ans = stk.top();
     return 1;
 }
+
+string truncate(string str, size_t len) {
+    if (str.length() > len)
+        return str.substr(0, len - 3) + "...";
+    return str;
+}
+
+string fillBlank(string str, size_t len) {
+    if (len > str.length()) {
+        return string(len - str.length(), ' ');
+    }
+    return string();
+}
