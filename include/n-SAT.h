@@ -11,7 +11,9 @@ enum TK {
     TK_VAR,
     TK_AND,
     TK_OR,
-    TK_NEG
+    TK_NEG,
+    TK_IMP,
+    TK_IFF
 };
 
 struct Token {
@@ -29,7 +31,9 @@ static struct Rule {
     {"&", TK_AND},
     {"\\|", TK_OR},
     {"!", TK_NEG},
-    {"[a-zA-Z]+", TK_VAR}
+    {"[a-zA-Z]+", TK_VAR},
+    {"<->", TK_IFF},
+    {"->", TK_IMP}
 };
 
 #define NR_REGEX ARRLEN(rules)

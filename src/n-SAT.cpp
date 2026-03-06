@@ -33,6 +33,8 @@ bool make_token(char *e, map<string, bool> *var, int *nr_var) {
                     case TK_AND:
                     case TK_OR:
                     case TK_NEG:
+                    case TK_IMP:
+                    case TK_IFF:
                     case '(':
                     case ')':
                         tokens[nr_token].type = rules[i].token_type;
@@ -87,7 +89,7 @@ void gen_rpn(vector<Token> *rpn) {
                 if (stk.empty() || get_priority(stk.top().type) < get_priority(tokens[i].type)) {
                     stk.push(tokens[i]);
                 } else {
-                    if (tokens[i].type == TK_NEG) {
+                    if (tokens[i].type == TK_NEG || tokens[i].type == TK_IMP) {
                         stk.push(tokens[i]);
                     } else {
                         rpn->push_back(tokens[i]);
@@ -105,12 +107,16 @@ int get_priority(int type) {
     switch (type) {
         case '(':
             return 0;
-        case TK_OR:
+        case TK_IFF:
             return 1;
-        case TK_AND:
+        case TK_IMP:
             return 2;
-        case TK_NEG:
+        case TK_OR:
             return 3;
+        case TK_AND:
+            return 4;
+        case TK_NEG:
+            return 5;
         default:
             return -1;
     }
@@ -129,19 +135,35 @@ bool eval(vector<Token> rpn, map<string, bool> var, bool *ans) {
                 break;
             case TK_AND:
                 if (stk.size() < 2) return 0;
-                opt1 = stk.top();
-                stk.pop();
                 opt2 = stk.top();
+                stk.pop();
+                opt1 = stk.top();
                 stk.pop();
                 stk.push(opt1 & opt2);
                 break;
             case TK_OR:
                 if (stk.size() < 2) return 0;
-                opt1 = stk.top();
-                stk.pop();
                 opt2 = stk.top();
                 stk.pop();
+                opt1 = stk.top();
+                stk.pop();
                 stk.push(opt1 | opt2);
+                break;
+            case TK_IMP:
+                if (stk.size() < 2) return 0;
+                opt2 = stk.top();
+                stk.pop();
+                opt1 = stk.top();
+                stk.pop();
+                stk.push(!opt1 | opt2);
+                break;
+            case TK_IFF:
+                if (stk.size() < 2) return 0;
+                opt2 = stk.top();
+                stk.pop();
+                opt1 = stk.top();
+                stk.pop();
+                stk.push(opt1 == opt2);
                 break;
             case TK_NEG:
                 if (stk.size() < 1) return 0;
