@@ -1,4 +1,4 @@
-#include "n-SAT.h"
+#include "calc.h"
 
 void init_regex() {
     for (int i = 0 ; i < NR_REGEX ; ++i) {
