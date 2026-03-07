@@ -35,6 +35,7 @@ bool make_token(char *e, map<string, bool> *var, int *nr_var) {
                     case TK_NEG:
                     case TK_IMP:
                     case TK_IFF:
+                    case TK_XOR:
                     case '(':
                     case ')':
                         tokens[nr_token].type = rules[i].token_type;
@@ -113,10 +114,12 @@ int get_priority(int type) {
             return 2;
         case TK_OR:
             return 3;
-        case TK_AND:
+        case TK_XOR:
             return 4;
-        case TK_NEG:
+        case TK_AND:
             return 5;
+        case TK_NEG:
+            return 6;
         default:
             return -1;
     }
@@ -165,6 +168,14 @@ bool eval(vector<Token> rpn, map<string, bool> var, bool *ans) {
                 stk.pop();
                 stk.push(opt1 == opt2);
                 break;
+            case TK_XOR:
+                if (stk.size() < 2) return 0;
+                opt2 = stk.top();
+                stk.pop();
+                opt1 = stk.top();
+                stk.pop();
+                stk.push(opt1 ^ opt2);
+                break;
             case TK_NEG:
                 if (stk.size() < 1) return 0;
                 opt1 = stk.top();
@@ -175,7 +186,7 @@ bool eval(vector<Token> rpn, map<string, bool> var, bool *ans) {
                 return 0;
         }
     }
-    if (stk.empty()) return 0;
+    if (stk.size() != 1) return 0;
     *ans = stk.top();
     return 1;
 }

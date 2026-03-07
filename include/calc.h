@@ -13,7 +13,8 @@ enum TK {
     TK_OR,
     TK_NEG,
     TK_IMP,
-    TK_IFF
+    TK_IFF,
+    TK_XOR
 };
 
 struct Token {
@@ -33,7 +34,8 @@ static struct Rule {
     {"!", TK_NEG},
     {"[a-zA-Z]+", TK_VAR},
     {"<->", TK_IFF},
-    {"->", TK_IMP}
+    {"->", TK_IMP},
+    {"\\^", TK_XOR}
 };
 
 #define NR_REGEX ARRLEN(rules)

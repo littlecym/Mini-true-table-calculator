@@ -5,7 +5,7 @@ int main(int argc, char *argv[]) {
     char *str = NULL;
     str = (char *)malloc(sizeof(char) * ARRLEN(tokens));
     cout << ANSI_FMT("[input] ", ANSI_FG_CYAN) << flush;
-    cin >> str;
+    cin.getline(str, ARRLEN(tokens));
     if (strlen(str) >= ARRLEN(tokens)) {
         cout << ANSI_FMT("String too long.", ANSI_FG_RED) << endl;
         return 1;
